@@ -62,10 +62,20 @@ public class AnnotatedAlgorithm extends AbstractAlgorithm {
 
     @Override
     public void execute(ProcessExecutionContext context) throws ExecutionException {
+        /* a map that holds a reference to combined group bindings:
+        * this map ensure that an algorithm receives annotated group bindings 
+        * in the correct order. The List<?> bindings for a group input
+        * are represented as individiual flat fields in the algorithm instance. Therefore
+        * two inputs of the same group receive inputs in different fields, but
+        * with the same count and in the correct order
+        */
         Map<String, List<Data<?>>> combinedBindings = new HashMap<>();
 
+        // helper map to store the binding for later reflection calls
         Map<String, AbstractInputBinding> inputIdentifierToBinding = new HashMap<>();
 
+        // go through all inputs and check if it belongs to a group
+        // if so, store it in the helper map
         this.metadata.getInputBindings().forEach((id, binding) -> {
             String groupName = binding.getDescription().getGroup();
             if (!(binding.getDescription() instanceof TypedGroupInputDescription) &&
@@ -74,15 +84,22 @@ public class AnnotatedAlgorithm extends AbstractAlgorithm {
             }
         });
 
+        // go through all bindings and check if it is an actual instance
+        // of a group input (GroupInput annotation)
         this.metadata.getInputBindings().forEach((id, binding) -> {
             String groupName = binding.getDescription().getGroup();
 
             /* check if we have group input wrapper */
             if (binding.getDescription().isGroup() && binding.getDescription() instanceof TypedGroupInputDescription) {
+                // the GroupInput inputs hold the actual child inputs
                 List<Data<?>> theGroupInputs = context.getInputs().get(id);
                 theGroupInputs.forEach(gi -> {
+                    // currently, only GroupInputData is supported
                     if (gi instanceof GroupInputData) {
                         GroupInputData gid = (GroupInputData) gi;
+                        
+                        // go through all inputs and attach them to the combined bindings
+                        // which are later used to set the input via reflections
                         gid.getPayload().forEach((code, data) -> {
                             if (!combinedBindings.containsKey(code.getValue())) {
                                 combinedBindings.put(code.getValue(), Lists.newArrayList());
@@ -96,18 +113,16 @@ public class AnnotatedAlgorithm extends AbstractAlgorithm {
 
             /* check if we have an input not belonging to any group */
             if (!binding.getDescription().isGroup() && (groupName == null || groupName.isEmpty())) {
-                // just set the input via reflections
+                // just set the input via reflections --> the behavior as before groups were supported
                 binding.set(this.algorithmInstance, context.getInputs().get(id));
             }
         });
 
+        // iterate over the bindings and set the values via reflections
         inputIdentifierToBinding.forEach((value, binding) -> {
             binding.set(this.algorithmInstance, combinedBindings.get(value));
         });
 
-//        this.metadata.getInputBindings().forEach((id, binding) -> {
-//            binding.set(this.algorithmInstance, context.getInputs().get(id));
-//        });
         this.metadata.getExecuteBinding().execute(this.algorithmInstance);
         this.metadata.getOutputBindings().forEach((id,
                 binding) -> context.getOutputs().put(id, binding.get(this.algorithmInstance)));
