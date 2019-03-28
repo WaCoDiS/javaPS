@@ -156,7 +156,7 @@
     </dependencies>
     
     <build>
-        <finalName>${project.parent.artifactId}-${project.artifactId}-${project.version}</finalName>
+        <finalName>wacodis-wps</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
