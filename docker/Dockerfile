@@ -13,7 +13,7 @@ RUN mvn -f ./javaps/pom.xml clean install -DskipTests -pl !webapp\
 	&& mvn -f ./wacodis-backend/pom.xml clean install -DskipTests \
 	&& mvn -f ./javaps/pom.xml clean install -DskipTests -pl webapp
 
-FROM tomcat:8.5-slim
+FROM tomcat:9-jre8-slim
 WORKDIR /app
 COPY --from=build /app/javaps/webapp/target/wacodis-wps.war $CATALINA_HOME/webapps/
 ENV JAVA_OPTS="-Xmx4g -Xms2g"
