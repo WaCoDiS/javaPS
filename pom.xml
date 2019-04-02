@@ -89,6 +89,7 @@
         <version.slf4j>1.7.25</version.slf4j>
         <version.log4j>2.3</version.log4j>
         <version.arctic.sea>5.0.1</version.arctic.sea>
+        <version.min.commons-io>2.2</version.min.commons-io>
     </properties>
 
     <dependencyManagement>
@@ -447,6 +448,13 @@
                                 <requireJavaVersion>
                                     <version>[${version.java},)</version>
                                 </requireJavaVersion>
+                                          <bannedDependencies>
+                                <excludes>
+                                    <!-- exclude all commons-io versions lower than version.commons-io-->
+                                    <!-- at least 2.2 necessary -->                                   
+                                    <exclude>commons-io:commons-io:[0.0,${version.min.commons-io})</exclude>
+                                </excludes>
+                            </bannedDependencies>
                             </rules>
                         </configuration>
                     </execution>
