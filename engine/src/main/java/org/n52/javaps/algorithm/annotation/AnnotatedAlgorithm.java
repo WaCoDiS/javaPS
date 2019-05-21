@@ -63,7 +63,7 @@ public class AnnotatedAlgorithm extends AbstractAlgorithm {
     @Override
     public void execute(ProcessExecutionContext context) throws ExecutionException {
         /* a map that holds a reference to combined group bindings:
-        * this map ensure that an algorithm receives annotated group bindings 
+        * this map ensure that an algorithm receives annotated group bindings
         * in the correct order. The List<?> bindings for a group input
         * are represented as individiual flat fields in the algorithm instance. Therefore
         * two inputs of the same group receive inputs in different fields, but
@@ -97,7 +97,7 @@ public class AnnotatedAlgorithm extends AbstractAlgorithm {
                     // currently, only GroupInputData is supported
                     if (gi instanceof GroupInputData) {
                         GroupInputData gid = (GroupInputData) gi;
-                        
+
                         // go through all inputs and attach them to the combined bindings
                         // which are later used to set the input via reflections
                         gid.getPayload().forEach((code, data) -> {
