@@ -94,6 +94,8 @@
         <version.log4j>2.3</version.log4j>
         <version.arctic.sea>5.3.0</version.arctic.sea>
         <version.min.commons-io>2.2</version.min.commons-io>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencyManagement>
