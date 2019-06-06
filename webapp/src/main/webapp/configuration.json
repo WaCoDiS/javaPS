@@ -136,7 +136,7 @@
     },
     "service.serviceURL" : {
       "type" : "uri",
-      "value" : "http://localhost:8080/wacodis-wps/service"
+      "value" : "https://wacodis.demo.52north.org/wacodis-wps/service"
     },
     "filewatcher.enabled" : {
       "type" : "boolean",
