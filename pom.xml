@@ -27,7 +27,7 @@
     </parent>-->
     <groupId>org.n52.wps</groupId>
     <artifactId>javaPS</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0</version>
     <packaging>pom</packaging>
 
     <name>52°North javaPS</name>
@@ -77,7 +77,7 @@
         <url>https://github.com/52North/javaPS</url>
         <connection>scm:git:git://github.com/52North/javaPS.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/52North/javaPS.git</developerConnection>
-      <tag>HEAD</tag>
+      <tag>v1.3.0</tag>
   </scm>
 
     <issueManagement>
@@ -90,9 +90,9 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
         <version.spring>5.1.3.RELEASE</version.spring>
-        <version.slf4j>1.7.25</version.slf4j>
+        <version.slf4j>1.7.26</version.slf4j>
         <version.log4j>2.3</version.log4j>
-        <version.arctic.sea>5.3.0</version.arctic.sea>
+        <version.arctic.sea>6.0.0</version.arctic.sea>
         <version.min.commons-io>2.2</version.min.commons-io>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -319,7 +319,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>2.9.8</version>
+                <version>2.9.9</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -353,6 +353,12 @@
                 <artifactId>httpcore</artifactId>
                 <version>4.4.10</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+        	    <groupId>org.mockito</groupId>
+        	    <artifactId>mockito-core</artifactId>
+        	    <version>2.27.0</version>
+        	    <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>net.sf.saxon</groupId>
