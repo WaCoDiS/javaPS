@@ -78,7 +78,7 @@
         <url>https://github.com/52North/javaPS</url>
         <connection>scm:git:git://github.com/52North/javaPS.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/52North/javaPS.git</developerConnection>
-      <tag>HEAD</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
@@ -125,14 +125,14 @@
                         <artifactId>joda-time</artifactId>
                         <groupId>joda-time</groupId>
                     </exclusion>
-				    <exclusion>
-				    	<groupId>com.fasterxml.jackson.core</groupId>
-				    	<artifactId>jackson-core</artifactId>
-				    </exclusion>
-				    <exclusion>
-				    	<groupId>com.fasterxml.jackson.core</groupId>
-				    	<artifactId>jackson-databind</artifactId>
-				    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-databind</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -149,10 +149,10 @@
                         <artifactId>jackson-core</artifactId>
                         <groupId>com.fasterxml.jackson.core</groupId>
                     </exclusion>
-				    <exclusion>
-				    	<groupId>com.fasterxml.jackson.core</groupId>
-				    	<artifactId>jackson-databind</artifactId>
-				    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-databind</artifactId>
+                    </exclusion>
                     <exclusion>
                         <artifactId>joda-time</artifactId>
                         <groupId>joda-time</groupId>
@@ -331,10 +331,10 @@
                 <artifactId>guava</artifactId>
                 <version>27.0-jre</version>
                 <exclusions>
-                   <exclusion>
-                       <groupId>com.google.code.findbugs</groupId>
-                       <artifactId>jsr305</artifactId>
-                   </exclusion>
+                    <exclusion>
+                        <groupId>com.google.code.findbugs</groupId>
+                        <artifactId>jsr305</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -357,13 +357,12 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore</artifactId>
                 <version>4.4.10</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
-        	    <groupId>org.mockito</groupId>
-        	    <artifactId>mockito-core</artifactId>
-        	    <version>2.27.0</version>
-        	    <scope>test</scope>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>2.27.0</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.n52.wps</groupId>
@@ -443,7 +442,7 @@
                 <groupId>xml-apis</groupId>
                 <artifactId>xml-apis</artifactId>
                 <version>1.4.01</version>
-            	<scope>runtime</scope>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>org.n52.wacodis</groupId>
@@ -522,7 +521,7 @@
         </plugins>
     </build>
     
-   <profiles>
+    <profiles>
         <profile>
             <id>jdk8</id>
             <activation>
