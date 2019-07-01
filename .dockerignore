@@ -2,6 +2,7 @@
 docs/
 Dockerfile
 Dockerfile-alpine
+docker-compose.yml
 NOTICE
 LICENSE
 README.md
