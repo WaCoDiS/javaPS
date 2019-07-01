@@ -1,8 +1,8 @@
 version: '3'
 services:
-  wacodis-wps:
+  javaps:
     build: .
-    image: wacodis/wps:1.x
+    image: registry.wacodis.demo.52north.org/javaps:2019-07-01
     env_file:
       - wacodis.env
     ports:
