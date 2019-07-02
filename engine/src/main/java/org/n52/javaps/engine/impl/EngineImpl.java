@@ -77,6 +77,7 @@ import com.google.common.util.concurrent.AbstractFuture;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import java.util.logging.Level;
 
 public class EngineImpl implements Engine, Destroyable {
     private static final String EXECUTING = "Executing {}";
@@ -403,17 +404,20 @@ public class EngineImpl implements Engine, Destroyable {
                     setJobCompletionInternal();
                     setJobStatus(JobStatus.failed());
                 }
-            } catch (Throwable ex) {
+            } catch (org.n52.javaps.algorithm.ExecutionException | InputDecodingException | RuntimeException ex) {
                 LOG.error("{} failed", this.jobId);
                 setJobCompletionInternal();
                 setJobStatus(JobStatus.failed());
                 this.nonPersistedResult.setException(ex);
             }
+            LOG.info("Job '{}' execution finished. Status: {};", getJobId().getValue(),
+                    getStatus().getStatus().getValue());
         }
         
         private void setJobCompletionInternal() {
             try {
                 set(onJobCompletion(this));
+                LOG.info("Succesfully set job '{}' completion.", getJobId().getValue());
             } catch (EngineException ex) {
                 setException(ex);
             }
