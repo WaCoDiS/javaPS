@@ -6,7 +6,7 @@ RUN git clone https://github.com/WaCoDiS/javaPS.git javaps \
 	&& git clone https://github.com/WaCoDiS/javaps-wacodis-backend.git wacodis-backend \
 	&& git -C ./javaps/javaps-iohandler checkout develop \
 	&& git -C ./javaps checkout develop \
-	&& git -C ./wacodis-backend checkout feature/land-classification
+	&& git -C ./wacodis-backend checkout master
 	
 FROM maven:3.5-jdk-8-alpine as build 
 WORKDIR /app

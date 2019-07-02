@@ -2,7 +2,7 @@ version: '3'
 services:
   javaps:
     build: .
-    image: registry.wacodis.demo.52north.org/javaps:2019-07-02b
+    image: registry.wacodis.demo.52north.org/javaps:2019-07-02e
     env_file:
       - wacodis.env
     ports:

@@ -35,6 +35,12 @@
         <Logger name="org.n52.iceland" level="info" additivity="false">
             <AppenderRef ref="console"/>
         </Logger>
+        <Logger name="org.n52.wacodis" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
+        <Logger name="de.wacodis" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
 
         <Root level="warn">
             <AppenderRef ref="console"/>
