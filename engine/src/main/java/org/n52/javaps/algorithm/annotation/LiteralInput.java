@@ -54,6 +54,8 @@ public @interface LiteralInput {
 
     String uom() default "";
 
+    String group() default "";
+
     Class<? extends LiteralType> binding() default LiteralType.class;
 
     /**

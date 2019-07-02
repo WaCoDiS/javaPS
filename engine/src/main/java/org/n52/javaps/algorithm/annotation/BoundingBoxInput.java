@@ -49,4 +49,6 @@ public @interface BoundingBoxInput {
     String defaultCRSString() default CRS_EPSG_4326;
 
     String[] supportedCRSStringArray() default { CRS_EPSG_4326 };
+
+    String group() default "";
 }

@@ -20,15 +20,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
+    <!-- <parent>
         <groupId>org.n52</groupId>
         <artifactId>parent</artifactId>
         <version>14</version>
-    </parent>
+    </parent> -->
 
     <groupId>org.n52.wps</groupId>
     <artifactId>javaPS</artifactId>
-    <version>1.1.2-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>52°North javaPS</name>
@@ -78,8 +78,8 @@
         <url>https://github.com/52North/javaPS</url>
         <connection>scm:git:git://github.com/52North/javaPS.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/52North/javaPS.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <issueManagement>
         <system>GitHub issues</system>
@@ -90,11 +90,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
-        <version.java>1.8</version.java>
         <version.spring>5.1.3.RELEASE</version.spring>
-        <version.slf4j>1.7.25</version.slf4j>
+        <version.slf4j>1.7.26</version.slf4j>
         <version.log4j>2.3</version.log4j>
-        <version.arctic.sea>5.2.0</version.arctic.sea>
+        <version.arctic.sea>6.0.0</version.arctic.sea>
+        <version.xmlbeans>3.1.0</version.xmlbeans>
+        <version.test.processes>1.4.0-SNAPSHOT</version.test.processes>
+        <version.iohandler>1.4.0-SNAPSHOT</version.iohandler>
+        <version.common.xml>2.6.1</version.common.xml>
+        <version.min.commons-io>2.2</version.min.commons-io>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencyManagement>
@@ -119,14 +125,14 @@
                         <artifactId>joda-time</artifactId>
                         <groupId>joda-time</groupId>
                     </exclusion>
-				    <exclusion>
-				    	<groupId>com.fasterxml.jackson.core</groupId>
-				    	<artifactId>jackson-core</artifactId>
-				    </exclusion>
-				    <exclusion>
-				    	<groupId>com.fasterxml.jackson.core</groupId>
-				    	<artifactId>jackson-databind</artifactId>
-				    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-databind</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -143,10 +149,10 @@
                         <artifactId>jackson-core</artifactId>
                         <groupId>com.fasterxml.jackson.core</groupId>
                     </exclusion>
-				    <exclusion>
-				    	<groupId>com.fasterxml.jackson.core</groupId>
-				    	<artifactId>jackson-databind</artifactId>
-				    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-databind</artifactId>
+                    </exclusion>
                     <exclusion>
                         <artifactId>joda-time</artifactId>
                         <groupId>joda-time</groupId>
@@ -234,6 +240,13 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>2.21.0</version>
+                <scope>test</scope>
+            </dependency>
 
             <dependency>
                 <groupId>org.hamcrest</groupId>
@@ -311,17 +324,17 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>2.9.8</version>
+                <version>2.9.9</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>27.0-jre</version>
                 <exclusions>
-                   <exclusion>
-                       <groupId>com.google.code.findbugs</groupId>
-                       <artifactId>jsr305</artifactId>
-                   </exclusion>
+                    <exclusion>
+                        <groupId>com.google.code.findbugs</groupId>
+                        <artifactId>jsr305</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -344,7 +357,27 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore</artifactId>
                 <version>4.4.10</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>2.27.0</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.n52.wps</groupId>
+                <artifactId>52n-xml-wps-v20</artifactId>
+                <version>${version.common.xml}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.n52.sensorweb</groupId>
+                <artifactId>52n-xml-ows-v20</artifactId>
+                <version>${version.common.xml}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.xmlbeans</groupId>
+                <artifactId>xmlbeans</artifactId>
+                <version>${version.xmlbeans}</version>
             </dependency>
             <dependency>
                 <groupId>net.sf.saxon</groupId>
@@ -390,6 +423,11 @@
                 <artifactId>commons-codec</artifactId>
                 <version>1.11</version>
             </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.6</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -398,10 +436,15 @@
             </dependency>
 
             <dependency>
-            	<groupId>xml-apis</groupId>
-            	<artifactId>xml-apis</artifactId>
-            	<version>1.4.01</version>
-            	<scope>runtime</scope>
+                <groupId>xml-apis</groupId>
+                <artifactId>xml-apis</artifactId>
+                <version>1.4.01</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.n52.wacodis</groupId>
+                <artifactId>javaps-wacodis-backend</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -426,34 +469,6 @@
             </testResource>
         </testResources>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <compilerVersion>${version.java}</compilerVersion>
-                    <source>${version.java}</source>
-                    <target>${version.java}</target>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireJavaVersion>
-                                    <version>[${version.java},)</version>
-                                </requireJavaVersion>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
@@ -500,38 +515,73 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.jasig.maven</groupId>
-                <artifactId>maven-notice-plugin</artifactId>
-                <inherited>false</inherited>
-                <configuration>
-                    <noticeTemplate>etc/notice-template.txt</noticeTemplate>
-                    <licenseMapping>
-                        <param>http://52north.github.io/cdn/licenses/license-mappings.xml</param>
-                    </licenseMapping>
-                    <generateChildNotices>false</generateChildNotices>
-                </configuration>
-                <executions>
-                    <!--
-                    <execution>
-                        <id>check-notice</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                    -->
-                    <execution>
-                        <id>generate-notice</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
+    
+    <profiles>
+        <profile>
+            <id>jdk8</id>
+            <activation>
+                <jdk>1.8</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jasig.maven</groupId>
+                        <artifactId>maven-notice-plugin</artifactId>
+                        <configuration>
+                            <licenseMapping>
+                                <param>http://52north.github.io/cdn/licenses/license-mappings.xml</param>
+                            </licenseMapping>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>since-jdk9</id>
+            <activation>
+                <jdk>[9,)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jasig.maven</groupId>
+                        <artifactId>maven-notice-plugin</artifactId>
+                        <configuration>
+                            <licenseMapping>
+                                <param>http://52north.github.io/cdn/licenses/license-mappings-jdk9.xml</param>
+                            </licenseMapping>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>create-license-list</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                        <version>1.5</version>
+                        <configuration>
+                            <useMissingFile>true</useMissingFile>
+                            <fileTemplate>etc/license-as-csv.ftl</fileTemplate>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>first</id>
+                                <goals>
+                                    <goal>aggregate-add-third-party</goal>
+                                </goals>
+                                <phase>generate-resources</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

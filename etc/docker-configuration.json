@@ -136,7 +136,7 @@
     },
     "service.serviceURL" : {
       "type" : "uri",
-      "value" : "http://localhost:8080/wps/service"
+      "value" : "http://localhost:8080/service"
     },
     "filewatcher.enabled" : {
       "type" : "boolean",
@@ -148,7 +148,7 @@
     },
     "misc.baseDirectory" : {
       "type" : "file",
-      "value" : "/tmp/wps/outputs/"
+      "value" : "/var/lib/jetty/webapps/ROOT/WEB-INF/tmp/"
     },
     "misc.duration" : {
       "type" : "string",

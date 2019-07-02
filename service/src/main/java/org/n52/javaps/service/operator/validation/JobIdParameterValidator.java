@@ -16,11 +16,14 @@
  */
 package org.n52.javaps.service.operator.validation;
 
-import org.n52.shetland.ogc.ows.exception.InvalidParameterValueException;
+import org.n52.javaps.engine.EngineException;
 import org.n52.shetland.ogc.ows.exception.MissingParameterValueException;
 import org.n52.shetland.ogc.ows.exception.OwsExceptionReport;
 import org.n52.shetland.ogc.wps.JobId;
+import org.n52.shetland.ogc.wps.exception.NoSuchJobException;
+import org.n52.shetland.ogc.wps.exception.ResultNotReadyException;
 import org.n52.shetland.ogc.wps.request.AbstractJobIdRequest;
+import org.n52.shetland.ogc.wps.request.GetResultRequest;
 
 /**
  * TODO JavaDoc
@@ -38,7 +41,18 @@ public class JobIdParameterValidator extends EngineParameterValidator<AbstractJo
         }
 
         if (!getEngine().hasJob(jobId)) {
-            throw new InvalidParameterValueException(JOB_ID, jobId.getValue());
+            throw new NoSuchJobException(JOB_ID, jobId.getValue());
+        }
+
+        boolean resultReady = false;
+        try {
+            resultReady = getEngine().getResult(jobId).isDone();
+        } catch (EngineException e) {
+            // do nothing
+        }
+
+        if (!resultReady && request instanceof GetResultRequest) {
+            throw new ResultNotReadyException(JOB_ID, jobId.getValue());
         }
     }
 
