@@ -13,3 +13,5 @@ services:
           memory: 4G
         reservations:
           memory: 2G
+    volumes:
+      - ./config/configuration.json:/usr/local/tomcat/webapps/wacodis-wps/WEB-INF/config/configuration.json
