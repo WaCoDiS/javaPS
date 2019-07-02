@@ -77,7 +77,6 @@ import com.google.common.util.concurrent.AbstractFuture;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import java.util.logging.Level;
 
 public class EngineImpl implements Engine, Destroyable {
     private static final String EXECUTING = "Executing {}";
@@ -99,6 +98,8 @@ public class EngineImpl implements Engine, Destroyable {
     private final JobIdGenerator jobIdGenerator;
 
     private final ResultPersistence resultPersistence;
+    
+    private final Object jobStatusMutex = new Object();
 
     @Inject
     public EngineImpl(RepositoryManager repositoryManager, ProcessInputDecoder processInputDecoder,
@@ -143,12 +144,14 @@ public class EngineImpl implements Engine, Destroyable {
 
     @Override
     public StatusInfo getStatus(JobId identifier) throws EngineException {
-        LOG.info("Getting status {}", identifier);
-        Job job = this.jobs.get(identifier);
-        if (job != null) {
-            return job.getStatus();
-        } else {
-            return this.resultPersistence.getStatus(identifier);
+        synchronized (jobStatusMutex) {
+            LOG.info("Getting status {}", identifier);
+            Job job = this.jobs.get(identifier);
+            if (job != null) {
+                return job.getStatus();
+            } else {
+                return this.resultPersistence.getStatus(identifier);
+            }            
         }
     }
 
@@ -186,26 +189,29 @@ public class EngineImpl implements Engine, Destroyable {
     }
 
     private Result onJobCompletion(Job job) throws EngineException {
-        this.cancelers.remove(job.getJobId());
-        this.resultPersistence.save(job);
-        this.jobs.remove(job.getJobId());
-        return this.resultPersistence.getResult(job.getJobId());
-
+        synchronized (jobStatusMutex) {
+            this.cancelers.remove(job.getJobId());
+            this.resultPersistence.save(job);
+            this.jobs.remove(job.getJobId());
+            return this.resultPersistence.getResult(job.getJobId());
+        }
     }
 
     @Override
     public Future<Result> getResult(JobId identifier) throws JobNotFoundException {
         LOG.info("Getting result {}", identifier);
-        Job job = this.jobs.get(identifier);
-        if (job != null) {
-            return job;
-        } else {
-            try {
-                return Futures.immediateFuture(this.resultPersistence.getResult(identifier));
-            } catch (JobNotFoundException ex) {
-                throw ex;
-            } catch (EngineException ex) {
-                return Futures.immediateFailedFuture(ex);
+        synchronized (jobStatusMutex) {
+            Job job = this.jobs.get(identifier);
+            if (job != null) {
+                return job;
+            } else {
+                try {
+                    return Futures.immediateFuture(this.resultPersistence.getResult(identifier));
+                } catch (JobNotFoundException ex) {
+                    throw ex;
+                } catch (EngineException ex) {
+                    return Futures.immediateFailedFuture(ex);
+                }
             }
         }
     }
@@ -396,27 +402,28 @@ public class EngineImpl implements Engine, Destroyable {
                     // setting the job completion after the status can lead to
                     // incosistent service calls
                     // (status=succeeded -> a fast GetResult, it might not be ready)!
-                    setJobCompletionInternal();
-                    setJobStatus(JobStatus.succeeded());
+                    setJobCompletionInternal(JobStatus.succeeded());
                 } catch (OutputEncodingException ex) {
                     LOG.error("Failed creating result for {}", this.jobId);
                     this.nonPersistedResult.setException(ex);
-                    setJobCompletionInternal();
-                    setJobStatus(JobStatus.failed());
+                    setJobCompletionInternal(JobStatus.failed());
                 }
             } catch (org.n52.javaps.algorithm.ExecutionException | InputDecodingException | RuntimeException ex) {
                 LOG.error("{} failed", this.jobId);
-                setJobCompletionInternal();
-                setJobStatus(JobStatus.failed());
+                setJobCompletionInternal(JobStatus.failed());
                 this.nonPersistedResult.setException(ex);
             }
             LOG.info("Job '{}' execution finished. Status: {};", getJobId().getValue(),
                     getStatus().getStatus().getValue());
         }
         
-        private void setJobCompletionInternal() {
+        private void setJobCompletionInternal(JobStatus s) {
             try {
-                set(onJobCompletion(this));
+                synchronized (EngineImpl.this.jobStatusMutex) {
+                    setJobStatus(s);
+                    set(onJobCompletion(this));
+                }
+                    
                 LOG.info("Succesfully set job '{}' completion.", getJobId().getValue());
             } catch (EngineException ex) {
                 setException(ex);
