@@ -232,7 +232,7 @@
                 <version>9.3.2.v20150730</version>
                 <configuration>
                     <webApp>
-                        <contextPath>/wps</contextPath>
+                        <contextPath>/wacodis-wps</contextPath>
                     </webApp>
                     <dumpOnStart>false</dumpOnStart>
                     <contextXml>${basedir}/src/main/webapp/WEB-INF/jetty-web.xml</contextXml>

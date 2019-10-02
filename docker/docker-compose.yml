@@ -2,7 +2,7 @@ version: '3'
 services:
   javaps:
     build: .
-    image: registry.wacodis.demo.52north.org/javaps:2019-07-02e
+    image: wacodis/wps
     env_file:
       - wacodis.env
     ports:
@@ -15,3 +15,6 @@ services:
           memory: 2G
     volumes:
       - ./config/configuration.json:/usr/local/tomcat/webapps/wacodis-wps/WEB-INF/config/configuration.json
+      - ./config/tools:/tmp/tools
+      - ./config/gpf:/tmp/gpf
+      - /var/run/docker.sock:/var/run/docker.sock
