@@ -17,4 +17,5 @@ services:
       - ./config/configuration.json:/usr/local/tomcat/webapps/wacodis-wps/WEB-INF/config/configuration.json
       - ./config/tools:/tmp/tools
       - ./config/gpf:/tmp/gpf
+      - ./outputs:/tmp/workdir
       - /var/run/docker.sock:/var/run/docker.sock

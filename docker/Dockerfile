@@ -6,7 +6,7 @@ RUN git clone https://github.com/WaCoDiS/javaPS.git javaps \
 	&& git clone https://github.com/WaCoDiS/javaps-wacodis-backend.git wacodis-backend \
 	&& git -C ./javaps/javaps-iohandler checkout develop \
 	&& git -C ./javaps checkout develop \
-	&& git -C ./wacodis-backend checkout master
+	&& git -C ./wacodis-backend checkout develop
 	
 FROM maven:3.5-jdk-8-alpine as build 
 WORKDIR /app
@@ -23,6 +23,11 @@ ARG TARGET_DIR=wacodis-wps/
 
 WORKDIR /app
 COPY --from=build /app/javaps/webapp/target/${WAR_FILE} $CATALINA_HOME/webapps/
+
+RUN mkdir /tmp/workdir \
+	&& mkdir /tmp/tools \
+	&& mkdir /tmp/gpf
+
 # extract WAR file
 RUN cd ${CATALINA_HOME}/webapps/ && \
     unzip ${WAR_FILE} -d ${TARGET_DIR} && \
