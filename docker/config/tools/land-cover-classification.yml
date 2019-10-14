@@ -1,6 +1,6 @@
 id: land-cover-classification
 docker:
-    host: tcp://localhost:2375
+    host: unix:///var/run/docker.sock
     image: dlm_docker:wacodis-eo-hackathon
     container: wacodis-eo-dlm
     workDir: /public
@@ -10,7 +10,7 @@ command:
     arguments:
         - name: -input
           type: wps-process-reference
-          value: RAW_OPTICAL_IMAGES_SOURCES
+          value: OPTICAL_IMAGES_SOURCES
           quantity: multiple
         - name: -training
           type: wps-process-reference
