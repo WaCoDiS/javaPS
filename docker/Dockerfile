@@ -17,7 +17,7 @@ RUN mvn -f ./javaps/javaps-iohandler/pom.xml clean install
 ARG CACHE_DATE=not_a_date
 
 RUN git clone https://github.com/WaCoDiS/javaps-wacodis-backend.git wacodis-backend \
-	&& git -C ./wacodis-backend checkout develop
+	&& git -C ./wacodis-backend checkout master
 
 RUN mvn -f ./wacodis-backend/pom.xml clean install -DskipTests
 RUN mvn -f ./javaps/webapp/pom.xml install -DskipTests
