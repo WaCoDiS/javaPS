@@ -42,14 +42,14 @@ public class TypedLiteralInputDescriptionImpl extends LiteralInputDescriptionImp
     }
 
     @Override
-    public String getGroup() {
-        return group;
-    }
-
-    @Override
     public boolean isGroup() {
         return this.getGroup() != null && !this.getGroup().isEmpty();
     }
+
+    protected abstract static class AbstractBuilder<T extends TypedLiteralInputDescription,
+            B extends AbstractBuilder<T, B>>
+            extends LiteralInputDescriptionImpl.AbstractBuilder<T, B>
+            implements TypedLiteralInputDescription.Builder<T, B> {
 
 
         private LiteralType<?> type;

@@ -23,17 +23,22 @@ import org.n52.shetland.ogc.wps.description.impl.BoundingBoxInputDescriptionImpl
 
 public class TypedBoundingBoxInputDescriptionImpl extends BoundingBoxInputDescriptionImpl
         implements TypedBoundingBoxInputDescription {
-        
-        private String group;
+
+    private String group;
 
     protected TypedBoundingBoxInputDescriptionImpl(AbstractBuilder<?, ?> builder) {
         super(builder);
-    
+
 
     }
 
+    @Override
+    public boolean isGroup() {
+        return this.getGroup() != null && !this.getGroup().isEmpty();
+    }
+
     protected abstract static class AbstractBuilder<T extends TypedBoundingBoxInputDescription,
-                                                        B extends AbstractBuilder<T, B>>
+            B extends AbstractBuilder<T, B>>
             extends BoundingBoxInputDescriptionImpl.AbstractBuilder<T, B>
             implements TypedBoundingBoxInputDescription.Builder<T, B> {
         protected AbstractBuilder(ProcessDescriptionBuilderFactory<?, ?, ?, ?, ?, ?, ?, ?, ?, ?> factory,
@@ -45,9 +50,6 @@ public class TypedBoundingBoxInputDescriptionImpl extends BoundingBoxInputDescri
                 ProcessDescriptionBuilderFactory<?, ?, ?, ?, ?, ?, ?, ?, ?, ?> factory) {
             super(factory);
         }
-    @Override
-    public boolean isGroup() {
-        return this.getGroup() != null && !this.getGroup().isEmpty();
     }
 
     public static class Builder extends AbstractBuilder<TypedBoundingBoxInputDescription, Builder> {
@@ -55,6 +57,8 @@ public class TypedBoundingBoxInputDescriptionImpl extends BoundingBoxInputDescri
                           BoundingBoxInputDescription entity) {
             super(factory, entity);
         }
+
+        private String group;
 
         protected Builder(ProcessDescriptionBuilderFactory<?, ?, ?, ?, ?, ?, ?, ?, ?, ?> factory) {
             super(factory);
@@ -68,7 +72,7 @@ public class TypedBoundingBoxInputDescriptionImpl extends BoundingBoxInputDescri
         @SuppressWarnings("unchecked")
         public Builder withGroup(String group) {
             this.group = group;
-            return  this;
+            return this;
         }
 
         public String getGroup() {

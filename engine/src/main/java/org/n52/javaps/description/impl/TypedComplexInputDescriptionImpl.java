@@ -29,7 +29,7 @@ public class TypedComplexInputDescriptionImpl extends ComplexInputDescriptionImp
 
     private static final String TYPE_STRING = "type";
     private final Class<? extends ComplexData<?>> type;
-    private final String group;
+//    private final String group;
 
     protected TypedComplexInputDescriptionImpl(AbstractBuilder<?, ?> builder) {
         super(builder);
@@ -41,16 +41,15 @@ public class TypedComplexInputDescriptionImpl extends ComplexInputDescriptionImp
         return this.type;
     }
 
-    @Override
-    public String getGroup() {
-        return this.group;
-    }
+//    @Override
+//    public String getGroup() {
+//        return this.group;
+//    }
     protected abstract static class AbstractBuilder<T extends TypedComplexInputDescription,
                                                            B extends AbstractBuilder<T, B>>
             extends ComplexInputDescriptionImpl.AbstractBuilder<T, B>
             implements TypedComplexInputDescription.Builder<T, B> {
 
-    @Override
     public boolean isGroup() {
         return getGroup() != null && !getGroup().isEmpty();
     }

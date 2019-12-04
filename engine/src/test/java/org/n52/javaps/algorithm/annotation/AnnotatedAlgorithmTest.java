@@ -17,12 +17,15 @@
 package org.n52.javaps.algorithm.annotation;
 
 import com.google.common.collect.Lists;
+
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -46,7 +49,6 @@ import org.n52.shetland.ogc.ows.OwsCode;
 import org.n52.shetland.ogc.wps.Format;
 
 /**
- *
  * @author <a href="mailto:m.rieke@52north.org">Matthes Rieke</a>
  */
 public class AnnotatedAlgorithmTest {
@@ -257,5 +259,16 @@ public class AnnotatedAlgorithmTest {
                 }
             }
         }
+
+        @Override
+        public Optional<LiteralType<?>> getLiteralType(String name) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<LiteralType<?>> getLiteralType(URI uri) {
+            return Optional.empty();
+        }
+
     }
 }

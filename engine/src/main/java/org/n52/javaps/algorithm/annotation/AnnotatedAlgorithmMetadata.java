@@ -186,53 +186,54 @@ public class AnnotatedAlgorithmMetadata {
         String identifier = Strings.emptyToNull(annotation.identifier()) == null ? algorithmClass.getCanonicalName()
                                                                                  : annotation.identifier();
 
+        // TODO adjust group input handling to latest javaPS enhancements
         /*
          * check if we need to group inputs
          */
-        List<ProcessInputDescription> allProcessedInputs = Lists.newArrayList();
-
-        // the annotated group inputs
-        List<GroupInputDescription> groupInputs = inputs.stream().filter(i -> {
-            return i.isGroup() && i instanceof GroupInputDescription;
-        }).map(gid -> (GroupInputDescription) gid).collect(Collectors.toList());
-
-        // the other inputs
-        List<ProcessInputDescription> nonGroupInputs = inputs.stream().filter(i -> {
-            return !(i instanceof GroupInputDescription);
-        }).map(ngi -> {
-            // check if this is a normal, non-grouped input
-            if (ngi instanceof TypedDataDescription) {
-                String groupName = ((TypedDataDescription) ngi).getGroup();
-                if (groupName == null || groupName.isEmpty()) {
-                    // add it to the final list of inputs, no consideration required here
-                    allProcessedInputs.add(ngi);
-                }
-            }
-            return ngi;
-        }).collect(Collectors.toList());
-
-        groupInputs.stream().
-                map(pid -> {
-                    // search the other inputs for group membership
-                    Set<TypedProcessInputDescription<?>> inputMembers = nonGroupInputs.stream().filter(i -> {
-                        return i.isGroup() && i instanceof TypedDataDescription;
-                    }).filter(i -> {
-                        TypedDataDescription t = (TypedDataDescription) i;
-                        return t.getGroup().equals(pid.getId().getValue());
-                    }).map(p -> {
-                        return (TypedProcessInputDescription<?>) p;
-                    })
-                            .distinct()
-                            .collect(Collectors.toSet());
-
-                    return new TypedGroupInputDescriptionImpl(pid.getId(),
-                            pid.getTitle(), pid.getAbstract().orElse(null), pid.getKeywords(),
-                            pid.getMetadata(), pid.getOccurence(), inputMembers);
-                }).forEach(gi -> allProcessedInputs.add(gi));
+//        List<ProcessInputDescription> allProcessedInputs = Lists.newArrayList();
+//
+//        // the annotated group inputs
+//        List<GroupInputDescription> groupInputs = inputs.stream().filter(i -> {
+//            return i.isGroup() && i instanceof GroupInputDescription;
+//        }).map(gid -> (GroupInputDescription) gid).collect(Collectors.toList());
+//
+//        // the other inputs
+//        List<ProcessInputDescription> nonGroupInputs = inputs.stream().filter(i -> {
+//            return !(i instanceof GroupInputDescription);
+//        }).map(ngi -> {
+//            // check if this is a normal, non-grouped input
+//            if (ngi instanceof TypedDataDescription) {
+//                String groupName = ((TypedDataDescription) ngi).getGroup();
+//                if (groupName == null || groupName.isEmpty()) {
+//                    // add it to the final list of inputs, no consideration required here
+//                    allProcessedInputs.add(ngi);
+//                }
+//            }
+//            return ngi;
+//        }).collect(Collectors.toList());
+//
+//        groupInputs.stream().
+//                map(pid -> {
+//                    // search the other inputs for group membership
+//                    Set<TypedProcessInputDescription<?>> inputMembers = nonGroupInputs.stream().filter(i -> {
+//                        return i.isGroup() && i instanceof TypedDataDescription;
+//                    }).filter(i -> {
+//                        TypedDataDescription t = (TypedDataDescription) i;
+//                        return t.getGroup().equals(pid.getId().getValue());
+//                    }).map(p -> {
+//                        return (TypedProcessInputDescription<?>) p;
+//                    })
+//                            .distinct()
+//                            .collect(Collectors.toSet());
+//
+//                    return new TypedGroupInputDescriptionImpl(pid.getId(),
+//                            pid.getTitle(), pid.getAbstract().orElse(null), pid.getKeywords(),
+//                            pid.getMetadata(), pid.getOccurence(), inputMembers);
+//                }).forEach(gi -> allProcessedInputs.add(gi));
 
         return descriptionFactory.process().withIdentifier(identifier).withTitle(annotation.title()).withAbstract(
                 annotation.abstrakt()).withVersion(annotation.version()).storeSupported(annotation.storeSupported())
-                .statusSupported(annotation.statusSupported()).withInput(allProcessedInputs)
+                .statusSupported(annotation.statusSupported()).withInput(inputs)
                 .withOutput(outputs).build();
     }
 

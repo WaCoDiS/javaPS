@@ -46,12 +46,13 @@ public class TypedGroupInputDescriptionImpl extends GroupInputDescriptionImpl im
         return (Collection<? extends TypedProcessInputDescription<?>>) super.getInputDescriptions();
     }
 
-    @Override
-    public Object getType() {
-        return String.class;
-    }
+//    @Override
+//    public Object getType() {
+//        return String.class;
+//    }
+
     protected abstract static class AbstractBuilder<T extends TypedGroupInputDescription,
-                                                           B extends AbstractBuilder<T, B>>
+            B extends AbstractBuilder<T, B>>
             extends GroupInputDescriptionImpl.AbstractBuilder<T, B>
             implements TypedGroupInputDescription.Builder<T, B> {
 
@@ -63,6 +64,7 @@ public class TypedGroupInputDescriptionImpl extends GroupInputDescriptionImpl im
                                   GroupInputDescription entity) {
             super(factory, entity);
         }
+
 
         @Override
         public B withInput(ProcessInputDescription input) {
