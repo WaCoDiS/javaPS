@@ -16,40 +16,24 @@
  */
 package org.n52.javaps.description.impl;
 
-import java.util.Objects;
-import java.util.Set;
-
-import org.n52.shetland.ogc.ows.OwsCode;
-import org.n52.shetland.ogc.ows.OwsKeyword;
-import org.n52.shetland.ogc.ows.OwsLanguageString;
-import org.n52.shetland.ogc.ows.OwsMetadata;
-import org.n52.shetland.ogc.wps.InputOccurence;
-import org.n52.shetland.ogc.wps.description.LiteralDataDomain;
-import org.n52.shetland.ogc.wps.description.impl.LiteralInputDescriptionImpl;
 import org.n52.javaps.description.TypedLiteralInputDescription;
 import org.n52.javaps.io.literal.LiteralType;
+import org.n52.shetland.ogc.wps.description.LiteralInputDescription;
+import org.n52.shetland.ogc.wps.description.ProcessDescriptionBuilderFactory;
+import org.n52.shetland.ogc.wps.description.impl.LiteralInputDescriptionImpl;
 
-public class TypedLiteralInputDescriptionImpl extends LiteralInputDescriptionImpl implements
-        TypedLiteralInputDescription {
+import java.util.Objects;
+
+public class TypedLiteralInputDescriptionImpl extends LiteralInputDescriptionImpl
+        implements TypedLiteralInputDescription {
 
     private static final String TYPE_STRING = "type";
     private final LiteralType<?> type;
     private String group;
 
-    public TypedLiteralInputDescriptionImpl(OwsCode id, OwsLanguageString title, OwsLanguageString abstrakt, Set<
-            OwsKeyword> keywords, Set<OwsMetadata> metadata, InputOccurence occurence,
-            LiteralDataDomain defaultLiteralDataDomain, Set<LiteralDataDomain> supportedLiteralDataDomain, LiteralType<
-                    ?> type, String group) {
-        super(id, title, abstrakt, keywords, metadata, occurence, defaultLiteralDataDomain, supportedLiteralDataDomain);
-        this.type = Objects.requireNonNull(type, TYPE_STRING);
-        this.group = group;
-    }
-
     protected TypedLiteralInputDescriptionImpl(AbstractBuilder<?, ?> builder) {
-        this(builder.getId(), builder.getTitle(), builder.getAbstract(), builder.getKeywords(), builder.getMetadata(),
-                new InputOccurence(builder.getMinimalOccurence(), builder.getMaximalOccurence()), builder
-                        .getDefaultLiteralDataDomain(), builder.getSupportedLiteralDataDomains(), builder.getType(),
-                        builder.getGroup());
+        super(builder);
+        this.type = Objects.requireNonNull(builder.getType(), TYPE_STRING);
     }
 
     @Override
@@ -67,18 +51,26 @@ public class TypedLiteralInputDescriptionImpl extends LiteralInputDescriptionImp
         return this.getGroup() != null && !this.getGroup().isEmpty();
     }
 
-    public abstract static class AbstractBuilder<T extends TypedLiteralInputDescription, B extends AbstractBuilder<T,
-            B>> extends LiteralInputDescriptionImpl.AbstractBuilder<T, B> implements
-            TypedLiteralInputDescription.Builder<T, B> {
 
         private LiteralType<?> type;
         private String group;
 
+        protected AbstractBuilder(ProcessDescriptionBuilderFactory<?, ?, ?, ?, ?, ?, ?, ?, ?, ?> factory) {
+            super(factory);
+        }
+
+        protected AbstractBuilder(ProcessDescriptionBuilderFactory<?, ?, ?, ?, ?, ?, ?, ?, ?, ?> factory,
+                                  LiteralInputDescription entity) {
+            super(factory, entity);
+            if (entity instanceof TypedLiteralInputDescription) {
+                this.type = ((TypedLiteralInputDescription) entity).getType();
+            }
+        }
+
         @Override
-        @SuppressWarnings("unchecked")
         public B withType(LiteralType<?> type) {
             this.type = Objects.requireNonNull(type, TYPE_STRING);
-            return (B) this;
+            return self();
         }
 
         public LiteralType<?> getType() {
@@ -99,6 +91,14 @@ public class TypedLiteralInputDescriptionImpl extends LiteralInputDescriptionImp
     }
 
     public static class Builder extends AbstractBuilder<TypedLiteralInputDescription, Builder> {
+        protected Builder(ProcessDescriptionBuilderFactory<?, ?, ?, ?, ?, ?, ?, ?, ?, ?> factory) {
+            super(factory);
+        }
+
+        protected Builder(ProcessDescriptionBuilderFactory<?, ?, ?, ?, ?, ?, ?, ?, ?, ?> factory,
+                          LiteralInputDescription entity) {
+            super(factory, entity);
+        }
 
         @Override
         public TypedLiteralInputDescription build() {

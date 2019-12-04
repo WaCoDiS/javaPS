@@ -141,5 +141,5 @@ Temporary Items
 webapp/logs/
 
 logs/
-
-webapp/.factorypath
+.idea/
+*.iml

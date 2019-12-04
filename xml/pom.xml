@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.n52.wps</groupId>
         <artifactId>javaPS</artifactId>
-        <version>1.4.0-SNAPSHOT</version>
+        <version>1.5.0-SNAPSHOT</version>
     </parent>
     <artifactId>xml</artifactId>
     <name>52°North javaPS POX Binding</name>
@@ -82,6 +82,10 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.n52.arctic-sea</groupId>
+        	<artifactId>faroe-annotations</artifactId>
         </dependency>
     </dependencies>
 </project>

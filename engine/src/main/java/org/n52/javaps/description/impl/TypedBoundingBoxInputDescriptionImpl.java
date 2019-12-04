@@ -16,50 +16,49 @@
  */
 package org.n52.javaps.description.impl;
 
-import java.util.Set;
-
-import org.n52.shetland.ogc.ows.OwsCRS;
-import org.n52.shetland.ogc.ows.OwsCode;
-import org.n52.shetland.ogc.ows.OwsKeyword;
-import org.n52.shetland.ogc.ows.OwsLanguageString;
-import org.n52.shetland.ogc.ows.OwsMetadata;
-import org.n52.shetland.ogc.wps.InputOccurence;
-import org.n52.shetland.ogc.wps.description.impl.BoundingBoxInputDescriptionImpl;
 import org.n52.javaps.description.TypedBoundingBoxInputDescription;
+import org.n52.shetland.ogc.wps.description.BoundingBoxInputDescription;
+import org.n52.shetland.ogc.wps.description.ProcessDescriptionBuilderFactory;
+import org.n52.shetland.ogc.wps.description.impl.BoundingBoxInputDescriptionImpl;
 
-public class TypedBoundingBoxInputDescriptionImpl extends BoundingBoxInputDescriptionImpl implements
-        TypedBoundingBoxInputDescription {
+public class TypedBoundingBoxInputDescriptionImpl extends BoundingBoxInputDescriptionImpl
+        implements TypedBoundingBoxInputDescription {
+        
+        private String group;
 
-    private String group;
-
-    public TypedBoundingBoxInputDescriptionImpl(OwsCode id, OwsLanguageString title, OwsLanguageString abstrakt, Set<
-            OwsKeyword> keywords, Set<OwsMetadata> metadata, InputOccurence occurence, OwsCRS defaultCRS, Set<
-                    OwsCRS> supportedCRS, String group) {
-        super(id, title, abstrakt, keywords, metadata, occurence, defaultCRS, supportedCRS);
-        this.group = group;
-    }
-
-    protected TypedBoundingBoxInputDescriptionImpl(Builder builder) {
-        this(builder.getId(), builder.getTitle(), builder.getAbstract(), builder.getKeywords(), builder.getMetadata(),
-                new InputOccurence(builder.getMinimalOccurence(), builder.getMaximalOccurence()), builder
-                        .getDefaultCRS(), builder.getSupportedCRS(), builder.getGroup());
-
+    protected TypedBoundingBoxInputDescriptionImpl(AbstractBuilder<?, ?> builder) {
+        super(builder);
+    
 
     }
 
-    @Override
-    public String getGroup() {
-        return this.group;
-    }
+    protected abstract static class AbstractBuilder<T extends TypedBoundingBoxInputDescription,
+                                                        B extends AbstractBuilder<T, B>>
+            extends BoundingBoxInputDescriptionImpl.AbstractBuilder<T, B>
+            implements TypedBoundingBoxInputDescription.Builder<T, B> {
+        protected AbstractBuilder(ProcessDescriptionBuilderFactory<?, ?, ?, ?, ?, ?, ?, ?, ?, ?> factory,
+                                  BoundingBoxInputDescription entity) {
+            super(factory, entity);
+        }
 
+        protected AbstractBuilder(
+                ProcessDescriptionBuilderFactory<?, ?, ?, ?, ?, ?, ?, ?, ?, ?> factory) {
+            super(factory);
+        }
     @Override
     public boolean isGroup() {
         return this.getGroup() != null && !this.getGroup().isEmpty();
     }
 
     public static class Builder extends AbstractBuilder<TypedBoundingBoxInputDescription, Builder> {
+        protected Builder(ProcessDescriptionBuilderFactory<?, ?, ?, ?, ?, ?, ?, ?, ?, ?> factory,
+                          BoundingBoxInputDescription entity) {
+            super(factory, entity);
+        }
 
-        private String group;
+        protected Builder(ProcessDescriptionBuilderFactory<?, ?, ?, ?, ?, ?, ?, ?, ?, ?> factory) {
+            super(factory);
+        }
 
         @Override
         public TypedBoundingBoxInputDescription build() {
