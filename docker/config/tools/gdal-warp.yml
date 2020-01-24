@@ -1,6 +1,6 @@
 id: gdal-warp
 docker:
-    host: tcp://localhost:2375
+    host: unix:///var/run/docker.sock
     image: osgeo/gdal:ubuntu-full-latest
     container: wacodis-gdal-warp
     workDir: /home
